@@ -8,7 +8,7 @@
             "name": "Filtering Program",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/main",
+            "program": "${workspaceFolder}/build/mainFilter",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -18,6 +18,28 @@ cv::Mat mean_filter(cv::Mat src){
 
 }
 
+cv::Mat median_filter(cv::Mat src){
+  
+  cv::Mat dst;
+
+  // Apply median filter on source image with kernel size 3
+  cv::medianBlur(src, dst, 3); 
+
+  return dst;
+
+}
+
+cv::Mat gaussian_filter(cv::Mat src){
+
+  cv::Mat dst;
+
+  //Blur the image with 3x3 Gaussian kernel
+  cv::GaussianBlur(src, dst, cv::Size(3, 3), 0);
+
+  return dst;
+
+}
+
 int main(int argc, char** argv) {
 
   // Check command line arguments
@@ -40,11 +62,16 @@ int main(int argc, char** argv) {
       return -1;
   }
   
-  cv::Mat dst = mean_filter(src);
+  // Apply 3 types of filtering technique (mean, median and gaussian)
+  cv::Mat dst1 = mean_filter(src);
+  cv::Mat dst2 = median_filter(src);
+  cv::Mat dst3 = gaussian_filter(src);
 
   // Display input and output images
   cv::imshow("Original Image", src);
-  cv::imshow("Mean Filtered Image", dst);
+  cv::imshow("Mean Filtered Image", dst1);
+  cv::imshow("Median Filtered Image", dst2);
+  cv::imshow("Gaussian Filtered Image", dst3);
 
   // Wait until any key is pressed
   cv::waitKey(0);
