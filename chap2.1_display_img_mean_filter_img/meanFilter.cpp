@@ -3,6 +3,21 @@
 
 #include <iostream> // For console I/O
 
+cv::Mat mean_filter(cv::Mat src){
+
+  // Create 3x3 mean filter kernel 
+  cv::Mat mean_kernel = (cv::Mat_<double>(3,3) << 1, 1, 1, 
+                                                  1, 1, 1, 
+                                                  1, 1, 1) / 9;
+  
+  // Apply mean filter on source image
+  cv::Mat dst;
+  cv::filter2D(src, dst, -1, mean_kernel);
+
+  return dst;
+
+}
+
 int main(int argc, char** argv) {
 
   // Check command line arguments
@@ -25,14 +40,7 @@ int main(int argc, char** argv) {
       return -1;
   }
   
-  // Create 3x3 mean filter kernel 
-  cv::Mat mean_kernel = (cv::Mat_<double>(3,3) << 1, 1, 1, 
-                                                  1, 1, 1, 
-                                                  1, 1, 1) / 9;
-  
-  // Apply mean filter on source image
-  cv::Mat dst;
-  cv::filter2D(src, dst, -1, mean_kernel);
+  cv::Mat dst = mean_filter(src);
 
   // Display input and output images
   cv::imshow("Original Image", src);
