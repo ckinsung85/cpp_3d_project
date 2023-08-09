@@ -38,8 +38,19 @@ int main(int argc, char** argv){
 
     // Print kd-tree nearest neighbors
     std::cout << "KD-tree 5 nearest neighbors:" << std::endl;
+
+    std::cout << "search point (centroid) X: " << searchPoint.x 
+        << "  Y: " << searchPoint.y << "  Z: " << searchPoint.z << std::endl;
+
     for(int i = 0; i < k_indices.size(); ++i) {
-        std::cout << "Index: " << k_indices[i] << " Distance: " << k_sqr_distances[i] << std::endl;
+
+        // Get the point based on the index
+        pcl::PointXYZ pt = cloud->points[k_indices[i]];
+
+        std::cout << "Point " << i + 1 << "; Index: " << k_indices[i] << std::endl;
+        std::cout << "   X: " << pt.x << "  Y: " << pt.y << "  Z: " << pt.z << std::endl;
+        std::cout << "   Distance: " << k_sqr_distances[i] << std::endl;
+
     }
 
     return 0;

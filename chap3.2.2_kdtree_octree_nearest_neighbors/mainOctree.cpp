@@ -37,10 +37,19 @@ int main(int argc, char** argv){
     std::vector<float> o_distances(5);
     octree.nearestKSearch(searchPoint, 5, o_indices, o_distances);
 
+    std::cout << "search point (centroid) X: " << searchPoint.x 
+        << "  Y: " << searchPoint.y << "  Z: " << searchPoint.z << std::endl;
+        
     // Print octree nearest neighbors  
-    std::cout << "Octree 5 nearest neighbors:" << std::endl;
     for(int i = 0; i < o_indices.size(); ++i) {
-        std::cout << "Index: " << o_indices[i] << " Distance: " << o_distances[i] << std::endl;
+
+        // Get the point based on the index
+        pcl::PointXYZ pt = cloud->points[o_indices[i]];
+
+        std::cout << "Point " << i + 1 << "; Index: " << o_indices[i] << std::endl;
+        std::cout << "   X: " << pt.x << "  Y: " << pt.y << "  Z: " << pt.z << std::endl;
+        std::cout << "   Distance: " << o_distances[i] << std::endl;
+
     }
 
     return 0;
