@@ -1,5 +1,6 @@
 #include <iostream>
 #include <pcl/io/ply_io.h>
+#include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <pcl/common/centroid.h>
 #include <pcl/visualization/cloud_viewer.h>
@@ -81,6 +82,14 @@ int main(int argc, char** argv){
 
     // Extract XYZRGB from XYZRGBNormal point cloud data
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb = genCloudXYZRGB(cloud2);
+
+    // Save point cloud data as .ply file
+    pcl::PLYWriter ply_writer;
+    ply_writer.write("cloud_centered.ply", *cloud_rgb);
+
+    // Save point cloud data as .pcd file
+    pcl::PCDWriter pcd_writer;
+    pcd_writer.writeBinaryCompressed("cloud_centered.pcd", *cloud_rgb);
 
     // Visualize the point cloud (CloudViewer only accpet data type: XYZ or XYZRGB format, not XYZRGBNormal)
     pcl::visualization::CloudViewer viewer("Simple Cloud Viewer");  
