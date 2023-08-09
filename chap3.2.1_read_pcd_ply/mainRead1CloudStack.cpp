@@ -7,7 +7,7 @@
 int main(int argc, char** argv){
 
     // Filepath
-    // std::string filename = "../ply_files/pointCloud.ply";
+    // std::string filename = "./ply_files/pointCloud.ply";
     std::string filename = argv[1];
 
     // Create point cloud pointer

@@ -4,10 +4,22 @@
 #include <pcl/common/centroid.h>
 #include <pcl/visualization/cloud_viewer.h>
 
+/*
+    When creating a pcl::PointCloud object in C++ with PCL, using a shared pointer (pcl::PointCloud<pcl::PointXYZ>::Ptr) 
+    is generally preferred over creating it directly on the stack (pcl::PointCloud<pcl::PointXYZ>).
+
+    Using a shared pointer like pcl::PointCloud::Ptr has some advantages:
+        The point cloud data is allocated on the heap rather than stack, so size is only limited by available memory.
+        The shared pointer handles cleanup automatically when the cloud goes out of scope.
+        The cloud can be efficiently passed to functions or stored without copying data.      
+        It supports reference counting when copying the pointer.
+        It's easier to resize and manipulate the cloud flexibly.
+*/
+
 int main(int argc, char** argv){
 
     // Filepath
-    // std::string filename = "../ply_files/pointCloud.ply";
+    // std::string filename = "./ply_files/pointCloud.ply";
     std::string filename = argv[1];
 
     // Create point cloud pointer 

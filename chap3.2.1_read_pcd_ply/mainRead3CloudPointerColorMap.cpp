@@ -4,6 +4,10 @@
 #include <pcl/common/centroid.h>
 #include <pcl/visualization/cloud_viewer.h>
 
+/*
+    Assign colormap to the pointcloud data for better visualization
+*/
+
 // Specify return type
 void colormap(float t, int method, uint8_t& r, uint8_t& g, uint8_t& b){
 
