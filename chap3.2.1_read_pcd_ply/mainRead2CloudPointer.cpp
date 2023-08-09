@@ -23,7 +23,7 @@ int main(int argc, char** argv){
     std::string filename = argv[1];
 
     // Create point cloud pointer 
-    // This creates a shared pointer cloud2 to a pcl::PointCloud created dynamically on the heap
+    // This creates a shared pointer cloud. pcl::PointCloud created dynamically on the heap
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1(new pcl::PointCloud<pcl::PointXYZ>());
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2(new pcl::PointCloud<pcl::PointXYZ>());
 
