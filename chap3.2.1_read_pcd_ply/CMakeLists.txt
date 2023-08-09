@@ -19,10 +19,14 @@ add_definitions(${PCL_DEFINITIONS})
 
 # Add executable for displayImage and meanFilter programs
 add_executable(mainRead mainRead.cpp) 
+add_executable(mainRead2 mainRead2.cpp) 
+add_executable(mainRead3 mainRead3.cpp) 
 add_executable(mainGenPointCloud mainGenPointCloud.cpp) 
 
 # Link display executable to OpenCV libraries
 target_link_libraries (mainRead ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
+target_link_libraries (mainRead2 ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
+target_link_libraries (mainRead3 ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
 target_link_libraries (mainGenPointCloud ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
 
 # Set build type to debug
