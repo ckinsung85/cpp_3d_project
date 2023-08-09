@@ -4,37 +4,83 @@
 #include <pcl/common/centroid.h>
 #include <pcl/visualization/cloud_viewer.h>
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
+// Specify return type
+void colormap(float t, int method, uint8_t& r, uint8_t& g, uint8_t& b){
 
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
+    // One can design the various color rendering methods based on variable t
+    switch (method) {
 
-    // Get XYZ points
-    colored_cloud->points.resize(cloud->points.size());
-    for(size_t i = 0; i < cloud->points.size(); i++) {
-        colored_cloud->points[i].x = cloud->points[i].x;
-        colored_cloud->points[i].y = cloud->points[i].y;
-        colored_cloud->points[i].z = cloud->points[i].z; 
+        case 1: 
+
+            // Grayscale rendering intensity =  t * 255
+            r = t * 255; // Red 
+            g = t * 255; // Green
+            b = t * 255; // Blue
+            break;
+
+        case 2:
+
+            // Rainbow rendering
+            r = (1 - t) * 255; // Red 
+            g = 0.5 * 255; // Green
+            b = t * 255; // Blue
+            break;
+            
+        case 3:
+
+            // Heatmap rendering
+            r = t * 255; // Red 
+            g = (1 - t) * 255; // Green
+            b = 0; // Blue
+            break;
+
+        case 4:
+
+            // Inverted Heatmap rendering
+            r = (1 - t) * 255; // Red 
+            g = t * 255; // Green
+            b = 0; // Blue
+            break;
+
+        case 5:
+        
+            // Blue to red rainbow
+            r = t * 255;
+            g = 0; 
+            b = (1 - t) * 255;
+            break;
+
+        case 6: 
+
+            // Cool to warm
+            r = t * 255;
+            g = t * 64;  
+            b = (1 - t) * 255;
+            break;
+
+        case 7:
+
+            // Red-green color blindness friendly
+            r = 0;
+            g = t * 255;
+            b = (1 - t) * 255;
+            break;
+
+        case 8:
+
+            // Ocean color
+            r = 0;
+            g = t * 127;
+            b = (1 - t) * 255;
+            break;
+
     }
-
-    for(size_t i = 0; i < colored_cloud->points.size(); i++) {
-
-        // Map depth (z) to RGB
-        float depth = colored_cloud->points[i].z;
-        int r = (depth * 255) / 20;
-        int g = ((depth * 255) / 20) * 0.5;
-        int b = 255 - ((depth * 255) / 20);
-
-        colored_cloud->points[i].r = r;
-        colored_cloud->points[i].g = g;
-        colored_cloud->points[i].b = b;
-    }
-
-    return colored_cloud;
-
+        
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
 
+    // Define the point cloud data
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
 
     // Get XYZ points
@@ -45,10 +91,11 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth2(pcl::PointCloud<pcl::PointX
         colored_cloud->points[i].z = cloud->points[i].z; 
     }
 
-    // Get min and max depth
+    // Define min and max depth
     float min_z = std::numeric_limits<float>::max();
     float max_z = std::numeric_limits<float>::min();
 
+    // Obtain the min max value of the point cloud data
     for(const auto& pt : cloud->points) {
         min_z = std::min(min_z, pt.z);
         max_z = std::max(max_z, pt.z);
@@ -62,10 +109,15 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth2(pcl::PointCloud<pcl::PointX
         // Map depth to 0-1 range
         float t = (z - min_z) / (max_z - min_z);
 
-        // Assign color based on t
-        colored_cloud->points[i].r = (1 - t) * 255; // Red 
-        colored_cloud->points[i].g = 100;
-        colored_cloud->points[i].b = t * 255; // Blue
+        // Choose a colormap for rendering the point cloud data (return r, g, b uint8 values)
+        uint8_t r, g, b;
+        int method = 1;  // Choose various colormap cases (1, 2, 3, ...)
+        colormap(t, method, r, g, b);
+
+        // Assign the color to the point cloud
+        colored_cloud->points[i].r = r; // Red 
+        colored_cloud->points[i].g = g; // Green
+        colored_cloud->points[i].b = b; // Blue
 
     }
 
@@ -111,8 +163,7 @@ int main(int argc, char** argv){
     std::cout << cloud2->points[0].x << " " << cloud2->points[0].y << " " << cloud2->points[0].z << std::endl;
 
     // Add color to the point cloud
-    // pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud2 = colorOnDepth(cloud2);
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud2 = colorOnDepth2(cloud2);
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud2 = colorOnDepth(cloud2);
 
     // Visualize the point cloud
     pcl::visualization::CloudViewer viewer("Simple Cloud Viewer");  
