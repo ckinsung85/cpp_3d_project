@@ -1,0 +1,45 @@
+/*
+c_cpp_properties.json configures the Visual Studio Code C/C++ extension to provide optimal IntelliSense, code navigation 
+and editing support for each workspace and project. It controls the compiler, includes, defines, and language standards.
+The settings apply only within VS Code, not to the actual build. The file can be shared across team members working on a project.
+*/
+
+{
+    "configurations": [
+  
+      // Config for Linux
+      {
+        "name": "Linux",
+        
+        // Add include paths
+        "includePath": [ 
+          "${workspaceFolder}/**",
+          "/usr/local/include/opencv4", 
+          "/usr/local/include/pcl-1.12",
+          "/usr/include/eigen3",
+          "/usr/include/vtk-6.3"
+        ],
+  
+        // Compiler definitions
+        "defines": [], 
+  
+        // Path to compiler 
+        "compilerPath": "/usr/bin/gcc",
+  
+        // C language standard
+        "cStandard": "c11",  
+  
+        // C++ language standard
+        "cppStandard": "gnu++14",
+  
+        // IntelliSense mode 
+        "intelliSenseMode": "linux-gcc-x64"
+  
+      }
+  
+    ],
+  
+    // File format version
+    "version": 4
+  
+  }
