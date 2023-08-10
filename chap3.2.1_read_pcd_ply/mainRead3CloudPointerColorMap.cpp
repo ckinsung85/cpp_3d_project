@@ -82,7 +82,7 @@ void colormap(float t, int method, uint8_t& r, uint8_t& g, uint8_t& b){
         
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) {
+pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int method) {
 
     // Define the point cloud data
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -115,7 +115,6 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXY
 
         // Choose a colormap for rendering the point cloud data (return r, g, b uint8 values)
         uint8_t r, g, b;
-        int method = 1;  // Choose various colormap cases (1, 2, 3, ...)
         colormap(t, method, r, g, b);
 
         // Assign the color to the point cloud
@@ -132,8 +131,8 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr colorOnDepth(pcl::PointCloud<pcl::PointXY
 int main(int argc, char** argv){
 
     // Filepath
-    // std::string filename = "./ply_files/pointCloud_1.ply";
-    std::string filename = argv[1];
+    std::string filename = argv[1];  // .ply file path
+    int method = std::stoi(argv[2]); // choice of colormap (1, 2, 3, ...)
 
     // Create point cloud pointer 
     // This creates a shared pointer cloud2 to a pcl::PointCloud created dynamically on the heap
@@ -144,15 +143,15 @@ int main(int argc, char** argv){
     pcl::io::loadPLYFile(filename, *cloud1);
 
     // Calculate mean of points
-	Eigen::Vector4f centroid1;	
-	pcl::compute3DCentroid(*cloud1, centroid1);
+    Eigen::Vector4f centroid1;  
+    pcl::compute3DCentroid(*cloud1, centroid1);
 
     // Minus the point cloud from its calculated centroid
     pcl::demeanPointCloud(*cloud1, centroid1, *cloud2);
 
     // Computer the new centroid values after deduction from the centroid 
-	Eigen::Vector4f centroid2;	
-	pcl::compute3DCentroid(*cloud2, centroid2);
+    Eigen::Vector4f centroid2;  
+    pcl::compute3DCentroid(*cloud2, centroid2);
 
     // Print out the centroid before and after
     std::cout << "centroid1 = " << centroid1 << std::endl;
@@ -167,7 +166,7 @@ int main(int argc, char** argv){
     std::cout << cloud2->points[0].x << " " << cloud2->points[0].y << " " << cloud2->points[0].z << std::endl;
 
     // Add color to the point cloud
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud2 = colorOnDepth(cloud2);
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_cloud2 = colorOnDepth(cloud2, method);
 
     // Visualize the point cloud
     pcl::visualization::CloudViewer viewer("Simple Cloud Viewer");  
