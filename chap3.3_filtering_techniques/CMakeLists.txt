@@ -12,6 +12,7 @@ find_package(PCL 1.2 REQUIRED)
 
 # Include directories
 include_directories(${PCL_INCLUDE_DIRS})
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Link directories
 link_directories(${PCL_LIBRARY_DIRS})
@@ -20,7 +21,7 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 # Add executable for displayImage and meanFilter programs
-add_executable(mainFilter mainFilter.cpp)
+add_executable(mainFilter mainFilter.cpp src/color.cpp)
 
 # Link display executable to OpenCV libraries
 target_link_libraries (mainFilter ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES})
