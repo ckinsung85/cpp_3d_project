@@ -10,7 +10,8 @@ int main(int argc, char** argv){
 
     // Filepath
     // std::string filename = "./ply_files/pointCloud.ply";
-    std::string filename = argv[1];
+    std::string filename = argv[1];   // .ply file path
+    int method = std::stoi(argv[2]); // choice of filtering method to choose
 
     // Create point cloud pointer 
     // This creates a shared pointer cloud. pcl::PointCloud created dynamically on the heap
@@ -21,8 +22,18 @@ int main(int argc, char** argv){
     // Load the ply file
     pcl::io::loadPLYFile(filename, *cloud);
 
-    // Generate the inliers and outliers based on statistical filtering
-    StatisticalOutlierRemovalFilter(cloud, cloud_inliers, cloud_outliers);
+    // Choose a method of filtering
+    switch (method) {
+        case 1: 
+            StatisticalOutlierRemovalFilter(cloud, cloud_inliers, cloud_outliers);
+            break;
+        case 2:
+            RadiusOutlierRemovalFilter(cloud, cloud_inliers, cloud_outliers);
+            break;
+        case 3: 
+            RadiusOutlierRemovalKDTreeFilter(cloud, cloud_inliers, cloud_outliers);
+            break;
+    }
 
     // Assign colormap to the point cloud
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr colored_inliers = colorOnDepth(cloud_inliers, 0);

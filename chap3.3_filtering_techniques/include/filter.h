@@ -7,3 +7,11 @@
 void StatisticalOutlierRemovalFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& input, 
                 pcl::PointCloud<pcl::PointXYZ>::Ptr& inliers,
                 pcl::PointCloud<pcl::PointXYZ>::Ptr& outliers);
+
+void RadiusOutlierRemovalFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, 
+                pcl::PointCloud<pcl::PointXYZ>::Ptr& inliers,
+                pcl::PointCloud<pcl::PointXYZ>::Ptr& outliers);
+
+void RadiusOutlierRemovalKDTreeFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& input, 
+                pcl::PointCloud<pcl::PointXYZ>::Ptr& inliers,
+                pcl::PointCloud<pcl::PointXYZ>::Ptr& outliers);
