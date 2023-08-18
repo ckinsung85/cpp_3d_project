@@ -4,9 +4,13 @@
 #include <pcl/visualization/cloud_viewer.h>
 #include "color.h"
 #include "filter.h"
+#include <chrono>
 
 
 int main(int argc, char** argv){
+
+    // Start the timer
+    auto start = std::chrono::high_resolution_clock::now();
 
     // Filepath
     // std::string filename = "./ply_files/pointCloud.ply";
@@ -22,7 +26,7 @@ int main(int argc, char** argv){
     // Load the ply file
     pcl::io::loadPLYFile(filename, *cloud);
 
-    // Choose a method of filtering
+    // Choose a filtering method
     switch (method) {
         case 1: 
             StatisticalOutlierRemovalFilter(cloud, cloud_inliers, cloud_outliers);
@@ -32,6 +36,9 @@ int main(int argc, char** argv){
             break;
         case 3: 
             RadiusOutlierRemovalKDTreeFilter(cloud, cloud_inliers, cloud_outliers);
+            break;
+        case 4:
+            RadiusOutlierRemovalOctreeFilter(cloud, cloud_inliers, cloud_outliers);
             break;
     }
 
@@ -47,6 +54,11 @@ int main(int argc, char** argv){
     std::cout << "inliers " << *colored_inliers << std::endl;
     std::cout << "outliers " << *colored_outliers << std::endl;
     std::cout << "combined " << *combined_cloud << std::endl;
+
+    // Calculate the duration and print the runtime
+    auto end = std::chrono::high_resolution_clock::now();  // End the timer
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Runtime: " << static_cast<float>(duration.count())/1000 << " seconds" << std::endl;  
 
     // Visualize the point cloud
     pcl::visualization::CloudViewer viewer("Simple Cloud Viewer");  
