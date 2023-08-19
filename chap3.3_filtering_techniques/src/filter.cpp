@@ -42,8 +42,8 @@ void RadiusOutlierRemovalFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud
     ror.filter(*inliers);  // Calls the filtering method and returns the filtered dataset as inliers
 
     // Stores outliers
-    sor.setNegative(true);  // true = inverted behavior
-    sor.filter(*outliers);  // Calls the filtering method and returns the filtered dataset as outliers
+    ror.setNegative(true);  // true = inverted behavior
+    ror.filter(*outliers);  // Calls the filtering method and returns the filtered dataset as outliers
 
 }
 
