@@ -6,6 +6,19 @@
 #include "filter.h"
 #include <chrono>
 
+/*
+    This is the main function of the program.
+    It reads the input point cloud and filters it using various methods
+        1) StatisticalOutlierRemovalFilter (Stndard Deviation of nearest neighbors)
+        2) RadiusOutlierRemovalFilter (Number of points inside a radius below a threshold)
+        3) RadiusOutlierRemovalKDTreeFilter (Number of points inside a radius below a threshold using KDTree)
+        4) RadiusOutlierRemovalOctreeFilter (Number of points inside a radius below a threshold using Octree)
+
+    Example of usage:
+        mkdir build && cd build && cmake.. && make 
+        ./mainFilter ../../ply_files/pointCloud_center.ply
+*/
+
 
 int main(int argc, char** argv){
 

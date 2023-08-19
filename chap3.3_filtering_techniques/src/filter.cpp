@@ -14,16 +14,16 @@ void StatisticalOutlierRemovalFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& 
                 
     // Invoke statistical outliers
     pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-    sor.setInputCloud(input);
-    sor.setMeanK(25);
-    sor.setStddevMulThresh(1);
+    sor.setInputCloud(input);  // Provide a pointer to the input dataset
+    sor.setMeanK(25);  // Number of nearest neighbors to use when computing the statistical mean
+    sor.setStddevMulThresh(1);  // Standard deviation threshold
 
     // Stores filtered inliers
-    sor.filter(*inliers);   
+    sor.filter(*inliers);  // Calls the filtering method and returns the filtered dataset as inliers
 
     // Stores outliers
-    sor.setNegative(true);
-    sor.filter(*outliers);
+    sor.setNegative(true);  // true = inverted behavior
+    sor.filter(*outliers);  // Calls the filtering method and returns the filtered dataset as outliers
 
 }
 
@@ -34,16 +34,16 @@ void RadiusOutlierRemovalFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud
 
     // Load point cloud data into cloud
     pcl::RadiusOutlierRemoval<pcl::PointXYZ> ror;
-    ror.setInputCloud(cloud);
-    ror.setRadiusSearch(50); 
-    ror.setMinNeighborsInRadius(25);
+    ror.setInputCloud(cloud);  // Provide a pointer to the input dataset
+    ror.setRadiusSearch(50);  // Set the radius of the sphere for searching the neighbors
+    ror.setMinNeighborsInRadius(25);  // Set the min number of neighbors to be classified as an inlier
 
     // Stores filtered inliers
-    ror.filter(*inliers);
+    ror.filter(*inliers);  // Calls the filtering method and returns the filtered dataset as inliers
 
     // Stores outliers
-    ror.setNegative(true);
-    ror.filter(*outliers);
+    sor.setNegative(true);  // true = inverted behavior
+    sor.filter(*outliers);  // Calls the filtering method and returns the filtered dataset as outliers
 
 }
 
@@ -60,9 +60,11 @@ void RadiusOutlierRemovalKDTreeFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr&
     float radius = 50; // Radius for outlier search
     int min_neighbors = 25; // Minimum number of neighbors for a point to be considered an inlier
 
+    // Initialization 
+    std::vector<int> k_indices;  // Vector to store point indices
+    std::vector<float> k_distances;  // Vector to store corresponding point distances
+
     // Get inliers by searching for points within a radius
-    std::vector<int> k_indices;
-    std::vector<float> k_distances;
     for (size_t i = 0; i < cloud->points.size(); ++i) {
         if (kdtree.radiusSearch(cloud->points[i], radius, k_indices, k_distances) > min_neighbors) {
             inliers->push_back(cloud->points[i]);
@@ -92,16 +94,13 @@ void RadiusOutlierRemovalOctreeFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr&
     std::vector<int> k_indices;  // Vector to store point indices
     std::vector<float> k_distances;  // Vector to store corresponding point distances
 
-    // Octree nearest neighbor search  
+    // Get inliers by searching for points within a radius
     for (size_t i = 0; i < cloud->points.size(); i++) {
-
-        // Store the point as either inlier or outlier
         if (octree.radiusSearch(cloud->points[i], radius, k_indices, k_distances) > min_neighbors){
             inliers->push_back(cloud->points[i]);
         }else{
             outliers->push_back(cloud->points[i]);
         }
-        
     }
 
 }
