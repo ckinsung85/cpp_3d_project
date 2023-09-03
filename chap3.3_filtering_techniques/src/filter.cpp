@@ -66,7 +66,12 @@ void RadiusOutlierRemovalKDTreeFilter(const pcl::PointCloud<pcl::PointXYZ>::Ptr&
 
     // Get inliers by searching for points within a radius
     for (size_t i = 0; i < cloud->points.size(); ++i) {
-        if (kdtree.radiusSearch(cloud->points[i], radius, k_indices, k_distances) > min_neighbors) {
+
+        // Number of points inside the defined radius
+        int num = kdtree.radiusSearch(cloud->points[i], radius, k_indices, k_distances);
+        
+        // Assign the point cloud as either inlier or outlier depending if the number of neighbors is above/below threshold
+        if (num > min_neighbors) {
             inliers->push_back(cloud->points[i]);
         }else{
             outliers->push_back(cloud->points[i]);
